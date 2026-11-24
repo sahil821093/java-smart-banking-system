@@ -7,6 +7,13 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("=== Welcome to Smart Banking System ===");
+        System.out.println("Select Account Type:");
+        System.out.println("1. Savings Account (Min Balance: Rs. 500)");
+        System.out.println("2. Current Account (Overdraft Limit: Rs. 5000)");
+        System.out.print("Apna choice chunein (1 or 2): ");
+        int accType = sc.nextInt();
+        sc.nextLine(); // buffer clear karne ke liye
+
         System.out.print("Enter Account Holder Name: ");
         String name = sc.nextLine();
 
@@ -16,9 +23,15 @@ public class Main {
         System.out.print("Enter Initial Deposit Amount (Rs.): ");
         double initialDeposit = sc.nextDouble();
 
-        // BankAccount class ka object banaya
-        BankAccount account = new BankAccount(name, accNo, initialDeposit);
-        System.out.println("\nAccount created successfully!");
+        // Runtime Polymorphism: Parent ka reference, Child ka object
+        BankAccount account;
+        if (accType == 1) {
+            account = new SavingsAccount(name, accNo, initialDeposit);
+            System.out.println("\nSavings Account created successfully!");
+        } else {
+            account = new CurrentAccount(name, accNo, initialDeposit);
+            System.out.println("\nCurrent Account created successfully!");
+        }
 
         int choice;
         do {
@@ -34,28 +47,21 @@ public class Main {
             switch (choice) {
                 case 1:
                     System.out.print("Enter deposit amount: Rs. ");
-                    double depAmount = sc.nextDouble();
-                    account.deposit(depAmount);
+                    account.deposit(sc.nextDouble());
                     break;
-
                 case 2:
                     System.out.print("Enter withdrawal amount: Rs. ");
-                    double withAmount = sc.nextDouble();
-                    account.withdraw(withAmount);
+                    account.withdraw(sc.nextDouble());
                     break;
-
                 case 3:
                     System.out.println("Current Balance: Rs. " + account.getBalance());
                     break;
-
                 case 4:
                     account.displayAccountDetails();
                     break;
-
                 case 5:
                     System.out.println("Thank you for using Smart Banking System. Goodbye!");
                     break;
-
                 default:
                     System.out.println("Galat option! Kripya 1 se 5 ke beech chunein.");
             }
